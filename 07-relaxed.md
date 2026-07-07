@@ -206,17 +206,17 @@ box[orange] Portability
 -->
 
 ```
- +------------------------------------------------------------------+
- | relaxed = atomicity + per-object coherence, NOTHING ELSE.        |
- |                                                                  |
- | GOOD: standalone counters, unique-id allocators, stats gathered  |
- |       after join — value-only, single-variable uses.            |
- | BAD:  publishing/consuming other data, ordering across two vars, |
+ +-------------------------------------------------------------------+
+ | relaxed = atomicity + per-object coherence, NOTHING ELSE.         |
+ |                                                                   |
+ | GOOD: standalone counters, unique-id allocators, stats gathered   |
+ |       after join — value-only, single-variable uses.              |
+ | BAD:  publishing/consuming other data, ordering across two vars,  |
  |       any "flag means X is ready" scenario -> use acquire/release.|
- |                                                                  |
- | On x86 the "speed win" is often zero; the portability RISK is    |
- | real (bugs surface on ARM). Default away from relaxed.          |
- +------------------------------------------------------------------+
+ |                                                                   |
+ | On x86 the "speed win" is often zero; the portability RISK is     |
+ | real (bugs surface on ARM). Default away from relaxed.            |
+ +-------------------------------------------------------------------+
 ```
 
 Next: [08-seq-cst-and-consume.md](08-seq-cst-and-consume.md).
