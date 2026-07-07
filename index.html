@@ -2884,7 +2884,7 @@ use(data);
  | Default to seq_cst; weaken only with proof + profiling.          |
  +------------------------------------------------------------------+</code></pre></details>
 <p>Next: <a href="06-acquire-release.md">06-acquire-release.md</a>.</p>` },
-  { name: `8. Acquire Release`, path: `06-acquire-release.md`, dir: ``, words: 1160, mins: 6, body: `<h1 id="06--acquirerelease-in-depth">06 — Acquire/Release In Depth</h1>
+  { name: `8. Acquire Release`, path: `06-acquire-release.md`, dir: ``, words: 1162, mins: 6, body: `<h1 id="06--acquirerelease-in-depth">06 — Acquire/Release In Depth</h1>
 <p>Acquire/release is the <strong>workhorse</strong> of correct, efficient atomic code. If you
 learn one non-default ordering well, learn this. It&rsquo;s how you publish data
 between threads without a mutex and without the cost of full <code>seq_cst</code>.</p>
@@ -3055,18 +3055,18 @@ ready.notify_one();                             // wake a waiter
 </code></pre>
 <hr />
 <h2 id="10-summary">10. Summary</h2>
-<div class="diagram"><div class="diagram-title">Acquire-release summary</div><div class="dbox green"><div class="dbox-title">Message passing</div><div class="dtext"><b>RELEASE</b> store publishes all prior writes; <b>ACQUIRE</b> load that reads it sees them all</div><div class="dtext">Lock-free message passing / ownership handoff with <b>ONE</b> atomic guarding arbitrary non-atomic data</div></div><div class="dbox orange"><div class="dbox-title">Limitations</div><div class="dtext">They are <b>ONE-WAY</b> (half) barriers -&gt; cheaper than <code>seq_cst</code>, but do <b>NOT</b> stop StoreLoad reordering (SB litmus) — that needs <code>seq_cst</code></div></div><div class="dbox teal"><div class="dbox-title">Usage</div><div class="dtext">Producer <code>STORE(release)</code>; consumer <code>LOAD(acquire)</code>. Not backwards</div><div class="dtext">RMW that both observes &amp; publishes -&gt; <code>acq_rel</code> (locks, refcounts)</div><div class="dtext">Prefer C++20 wait/notify over hand-spinning</div></div></div><details class="ascii-diagram"><summary>Details</summary><pre><code> +------------------------------------------------------------------+
- | RELEASE store publishes all prior writes; ACQUIRE load that reads |
- | it sees them all. -&gt; lock-free message passing / ownership handoff|
- | with ONE atomic guarding arbitrary non-atomic data.             |
- |                                                                  |
- | They are ONE-WAY (half) barriers -&gt; cheaper than seq_cst, but    |
- | do NOT stop StoreLoad reordering (SB litmus) — that needs seq_cst.|
- |                                                                  |
- | Producer STORE(release); consumer LOAD(acquire). Not backwards.  |
- | RMW that both observes &amp; publishes -&gt; acq_rel (locks, refcounts). |
- | Prefer C++20 wait/notify over hand-spinning.                     |
- +------------------------------------------------------------------+</code></pre></details>
+<div class="diagram"><div class="diagram-title">Acquire-release summary</div><div class="dbox green"><div class="dbox-title">Message passing</div><div class="dtext"><b>RELEASE</b> store publishes all prior writes; <b>ACQUIRE</b> load that reads it sees them all</div><div class="dtext">Lock-free message passing / ownership handoff with <b>ONE</b> atomic guarding arbitrary non-atomic data</div></div><div class="dbox orange"><div class="dbox-title">Limitations</div><div class="dtext">They are <b>ONE-WAY</b> (half) barriers -&gt; cheaper than <code>seq_cst</code>, but do <b>NOT</b> stop StoreLoad reordering (SB litmus) — that needs <code>seq_cst</code></div></div><div class="dbox teal"><div class="dbox-title">Usage</div><div class="dtext">Producer <code>STORE(release)</code>; consumer <code>LOAD(acquire)</code>. Not backwards</div><div class="dtext">RMW that both observes &amp; publishes -&gt; <code>acq_rel</code> (locks, refcounts)</div><div class="dtext">Prefer C++20 wait/notify over hand-spinning</div></div></div><details class="ascii-diagram"><summary>Details</summary><pre><code> +--------------------------------------------------------------------+
+ | RELEASE store publishes all prior writes; ACQUIRE load that reads  |
+ | it sees them all. -&gt; lock-free message passing / ownership handoff |
+ | with ONE atomic guarding arbitrary non-atomic data.                |
+ |                                                                    |
+ | They are ONE-WAY (half) barriers -&gt; cheaper than seq_cst, but      | 
+ | do NOT stop StoreLoad reordering (SB litmus) — that needs seq_cst. |
+ |                                                                    |
+ | Producer STORE(release); consumer LOAD(acquire). Not backwards.    |
+ | RMW that both observes &amp; publishes -&gt; acq_rel (locks, refcounts).  |
+ | Prefer C++20 wait/notify over hand-spinning.                       |
+ +--------------------------------------------------------------------+</code></pre></details>
 <p>Next: <a href="07-relaxed.md">07-relaxed.md</a>.</p>` },
   { name: `9. Relaxed`, path: `07-relaxed.md`, dir: ``, words: 969, mins: 5, body: `<h1 id="07--relaxed-ordering">07 — Relaxed Ordering</h1>
 <p><code>memory_order_relaxed</code> is the fastest and the most dangerous. It guarantees
