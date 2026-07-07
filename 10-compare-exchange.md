@@ -82,9 +82,9 @@ void atomic_multiply(int factor) {
 ```
    +---------------------------------------------------------+
    | current = load()                                        |
-   |   ┌──────────────────────────────────────────────┐     |
+   |   ┌───────────────────────────────────────────────┐     |
    |   │ desired = f(current)                          │     |
-   |   │ CAS(current, desired) ?                        │     |
+   |   │ CAS(current, desired) ?                       │     |
    |   │    success -> done                            │     |
    |   │    failure -> current now = latest; loop ─────┘     |
    +---------------------------------------------------------+
@@ -253,19 +253,19 @@ box[red] ABA problem
 -->
 
 ```
- +------------------------------------------------------------------+
- | CAS: atomically "if value==expected, set desired; else load into  |
- | expected." Returns success bool. The universal RMW primitive.    |
- |                                                                  |
- | weak: may fail spuriously -> use in LOOPS (cheaper).            |
- | strong: no spurious fail -> use for SINGLE attempts.            |
+ +--------------------------------------------------------------------+
+ | CAS: atomically "if value==expected, set desired; else load into   |
+ | expected." Returns success bool. The universal RMW primitive.      |
+ |                                                                    |
+ | weak: may fail spuriously -> use in LOOPS (cheaper).               |
+ | strong: no spurious fail -> use for SINGLE attempts.               |
  | Two orders: success (RMW) + failure (load; <= success, no release).|
- | CAS loop: load -> compute -> CAS(weak); retry on fail (expected  |
- |   auto-refreshed). Lock-free progress guaranteed.               |
- |                                                                  |
- | ABA PROBLEM: value returns to A after A->B->A; CAS wrongly       |
- |   succeeds. Fix with tagged pointers / hazard pointers / RCU.    |
- +------------------------------------------------------------------+
+ | CAS loop: load -> compute -> CAS(weak); retry on fail (expected    |
+ |   auto-refreshed). Lock-free progress guaranteed.                  |
+ |                                                                    |
+ | ABA PROBLEM: value returns to A after A->B->A; CAS wrongly         |
+ |   succeeds. Fix with tagged pointers / hazard pointers / RCU.      |
+ +--------------------------------------------------------------------+
 ```
 
 Next: [11-lock-free-structures.md](11-lock-free-structures.md).
