@@ -3677,7 +3677,7 @@ broken. Respect it.</p>
  |   succeeds. Fix with tagged pointers / hazard pointers / RCU.      |
  +--------------------------------------------------------------------+</code></pre></details>
 <p>Next: <a href="11-lock-free-structures.md">11-lock-free-structures.md</a>.</p>` },
-  { name: `13. Lock Free Structures`, path: `11-lock-free-structures.md`, dir: ``, words: 1329, mins: 7, body: `<h1 id="11--lock-free-data-structures">11 — Lock-Free Data Structures</h1>
+  { name: `13. Lock Free Structures`, path: `11-lock-free-structures.md`, dir: ``, words: 1331, mins: 7, body: `<h1 id="11--lock-free-data-structures">11 — Lock-Free Data Structures</h1>
 <p>Putting it together: real lock-free structures, their memory ordering, and the
 hard parts (memory reclamation, ABA, progress guarantees). This chapter is where
 atomics get genuinely difficult — the goal is to give you correct, minimal
@@ -3863,23 +3863,23 @@ PaddedIndex head_, tail_;   // producer &amp; consumer no longer fight over one 
    Lock-free costs: extreme difficulty, ABA/reclamation, hard-to-reproduce bugs,
      and often NOT faster under low/moderate contention.
 </code></pre>
-<div class="diagram"><div class="diagram-title">Lock-free vs mutex</div><div class="dbox green"><div class="dbox-title">Right question</div><div class="dtext">"Is it lock-free?" is the <b>wrong</b> first question</div><div class="dtext">"Is it <b>CORRECT</b> and fast <b>ENOUGH</b>?" is the right one</div><div class="dtext">A well-used mutex beats a broken lock-free structure always</div></div></div><details class="ascii-diagram"><summary>Details</summary><pre><code>   +--------------------------------------------------------------+
+<div class="diagram"><div class="diagram-title">Lock-free vs mutex</div><div class="dbox green"><div class="dbox-title">Right question</div><div class="dtext">"Is it lock-free?" is the <b>wrong</b> first question</div><div class="dtext">"Is it <b>CORRECT</b> and fast <b>ENOUGH</b>?" is the right one</div><div class="dtext">A well-used mutex beats a broken lock-free structure always</div></div></div><details class="ascii-diagram"><summary>Details</summary><pre><code>   +---------------------------------------------------------------+
    | "Is it lock-free?" is the wrong first question.               |
    | "Is it CORRECT and fast ENOUGH?" is the right one.            |
    | A well-used mutex beats a broken lock-free structure always.  |
-   +--------------------------------------------------------------+</code></pre></details>
+   +---------------------------------------------------------------+</code></pre></details>
 <hr />
 <h2 id="8-summary">8. Summary</h2>
-<div class="diagram"><div class="diagram-title">Lock-free structures summary</div><div class="dbox blue"><div class="dbox-title">Progress ladder</div><div class="dtext">blocking &lt; obstruction-free &lt; lock-free &lt; wait-free</div></div><div class="dbox green"><div class="dbox-title">SPSC ring buffer</div><div class="dtext">Single writer per index -&gt; just acquire/release, no CAS. Easiest &amp; fast. Pad head/tail to avoid false sharing</div></div><div class="dbox teal"><div class="dbox-title">Treiber stack</div><div class="dtext">CAS loop; push is easy, pop needs safe <b>RECLAMATION</b></div></div><div class="dbox orange"><div class="dbox-title">Reclamation</div><div class="dtext">Hazard pointers / EBR-RCU / atomic <code>shared_ptr</code>. C++26 standardizes hazard pointers &amp; RCU</div></div><div class="dbox purple"><div class="dbox-title">MPMC</div><div class="dtext">Michael-Scott/Vyukov: use a library, don't hand-roll</div></div><div class="dbox green"><div class="dbox-title">Default</div><div class="dtext">Default to a mutex; go lock-free only with proof + care</div></div></div><details class="ascii-diagram"><summary>Details</summary><pre><code> +------------------------------------------------------------------+
- | Progress: blocking &lt; obstruction-free &lt; lock-free &lt; wait-free.   |
- | SPSC ring buffer: single writer per index -&gt; just acquire/release,|
- |   no CAS. Easiest &amp; fast. Pad head/tail to avoid false sharing.  |
- | Treiber stack: CAS loop; push is easy, pop needs safe RECLAMATION.|
- | Reclamation (the hard part): hazard pointers / EBR-RCU / atomic  |
- |   shared_ptr. C++26 standardizes hazard pointers &amp; RCU.         |
- | MPMC (Michael-Scott/Vyukov): use a library, don't hand-roll.    |
- | Default to a mutex; go lock-free only with proof + care.        |
- +------------------------------------------------------------------+</code></pre></details>
+<div class="diagram"><div class="diagram-title">Lock-free structures summary</div><div class="dbox blue"><div class="dbox-title">Progress ladder</div><div class="dtext">blocking &lt; obstruction-free &lt; lock-free &lt; wait-free</div></div><div class="dbox green"><div class="dbox-title">SPSC ring buffer</div><div class="dtext">Single writer per index -&gt; just acquire/release, no CAS. Easiest &amp; fast. Pad head/tail to avoid false sharing</div></div><div class="dbox teal"><div class="dbox-title">Treiber stack</div><div class="dtext">CAS loop; push is easy, pop needs safe <b>RECLAMATION</b></div></div><div class="dbox orange"><div class="dbox-title">Reclamation</div><div class="dtext">Hazard pointers / EBR-RCU / atomic <code>shared_ptr</code>. C++26 standardizes hazard pointers &amp; RCU</div></div><div class="dbox purple"><div class="dbox-title">MPMC</div><div class="dtext">Michael-Scott/Vyukov: use a library, don't hand-roll</div></div><div class="dbox green"><div class="dbox-title">Default</div><div class="dtext">Default to a mutex; go lock-free only with proof + care</div></div></div><details class="ascii-diagram"><summary>Details</summary><pre><code> +--------------------------------------------------------------------+
+ | Progress: blocking &lt; obstruction-free &lt; lock-free &lt; wait-free.     |
+ | SPSC ring buffer: single writer per index -&gt; just acquire/release, |
+ |   no CAS. Easiest &amp; fast. Pad head/tail to avoid false sharing.    |
+ | Treiber stack: CAS loop; push is easy, pop needs safe RECLAMATION. |
+ | Reclamation (the hard part): hazard pointers / EBR-RCU / atomic    |
+ |   shared_ptr. C++26 standardizes hazard pointers &amp; RCU.            |
+ | MPMC (Michael-Scott/Vyukov): use a library, don't hand-roll.       |
+ | Default to a mutex; go lock-free only with proof + care.           |
+ +--------------------------------------------------------------------+</code></pre></details>
 <p>Next: <a href="12-patterns-and-pitfalls.md">12-patterns-and-pitfalls.md</a>.</p>` },
   { name: `14. Patterns And Pitfalls`, path: `12-patterns-and-pitfalls.md`, dir: ``, words: 1267, mins: 6, body: `<h1 id="12--patterns--pitfalls">12 — Patterns &amp; Pitfalls</h1>
 <p>A field guide of ready-to-use atomic patterns (spinlock, one-shot flag,
