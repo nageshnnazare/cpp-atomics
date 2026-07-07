@@ -180,11 +180,11 @@ box[red] consume
  |   seq_cst ops. The DEFAULT and the safe choice. Only order that  |
  |   forbids the Store-Buffer "both read 0" outcome. Needed for     |
  |   mutual-exclusion / "at least one sees the other" logic.        |
- |   Cost: pricier stores (x86) / both sides (ARM).                |
+ |   Cost: pricier stores (x86) / both sides (ARM).                 |
  |                                                                  |
  | consume: a well-intentioned cheaper-acquire that no compiler     |
  |   implements (promoted to acquire), hard to use correctly, and   |
- |   discouraged. Just use acquire.                                |
+ |   discouraged. Just use acquire.                                 |
  +------------------------------------------------------------------+
 ```
 
