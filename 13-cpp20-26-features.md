@@ -282,18 +282,18 @@ box[green] Practical
 -->
 
 ```
- +------------------------------------------------------------------+
- | C++20: wait/notify (blocking, no spin), atomic_ref (atomic view  |
+ +-------------------------------------------------------------------+
+ | C++20: wait/notify (blocking, no spin), atomic_ref (atomic view   |
  |   over plain objects), atomic<shared_ptr> (solves reclamation!),  |
- |   atomic<float> arithmetic, atomic_flag test()/wait().           |
- |   + latch/barrier/semaphore for coordination.                    |
- | C++23: <stdatomic.h> interop, constexpr/wording polish.          |
+ |   atomic<float> arithmetic, atomic_flag test()/wait().            |
+ |   + latch/barrier/semaphore for coordination.                     | 
+ | C++23: <stdatomic.h> interop, constexpr/wording polish.           |
  | C++26: std::hazard_pointer & std::rcu (standard safe reclamation),|
- |   std::execution, more. (Experimental in 2026.)                 |
- |                                                                  |
- | Practical: prefer wait/notify over spin; atomic<shared_ptr> for  |
- | read-mostly swaps; a library (or C++26 hazard/rcu) for lock-free.|
- +------------------------------------------------------------------+
+ |   std::execution, more. (Experimental in 2026.)                   |
+ |                                                                   |
+ | Practical: prefer wait/notify over spin; atomic<shared_ptr> for   |
+ | read-mostly swaps; a library (or C++26 hazard/rcu) for lock-free. |
+ +-------------------------------------------------------------------+
 ```
 
 Next: [14-cheatsheet.md](14-cheatsheet.md).
