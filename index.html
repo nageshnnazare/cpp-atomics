@@ -3205,17 +3205,17 @@ void consume() { while(!flag.load(std::memory_order_relaxed)); use(payload);}// 
 (correct) and inspect the broken pattern under TSan to see the race.</p>
 <hr />
 <h2 id="10-summary">10. Summary</h2>
-<div class="diagram"><div class="diagram-title">Relaxed ordering summary</div><div class="dbox gray"><div class="dbox-title">relaxed</div><div class="dtext">Atomicity + per-object coherence, <b>NOTHING ELSE</b></div></div><div class="dbox green"><div class="dbox-title">GOOD</div><div class="dtext">Standalone counters, unique-id allocators, stats gathered after join — value-only, single-variable uses</div></div><div class="dbox red"><div class="dbox-title">BAD</div><div class="dtext">Publishing/consuming other data, ordering across two vars, any "flag means X is ready" scenario -&gt; use acquire/release</div></div><div class="dbox orange"><div class="dbox-title">Portability</div><div class="dtext">On x86 the "speed win" is often zero; the portability <b>RISK</b> is real (bugs surface on ARM). Default away from relaxed</div></div></div><details class="ascii-diagram"><summary>Details</summary><pre><code> +------------------------------------------------------------------+
- | relaxed = atomicity + per-object coherence, NOTHING ELSE.        |
- |                                                                  |
- | GOOD: standalone counters, unique-id allocators, stats gathered  |
- |       after join — value-only, single-variable uses.            |
- | BAD:  publishing/consuming other data, ordering across two vars, |
+<div class="diagram"><div class="diagram-title">Relaxed ordering summary</div><div class="dbox gray"><div class="dbox-title">relaxed</div><div class="dtext">Atomicity + per-object coherence, <b>NOTHING ELSE</b></div></div><div class="dbox green"><div class="dbox-title">GOOD</div><div class="dtext">Standalone counters, unique-id allocators, stats gathered after join — value-only, single-variable uses</div></div><div class="dbox red"><div class="dbox-title">BAD</div><div class="dtext">Publishing/consuming other data, ordering across two vars, any "flag means X is ready" scenario -&gt; use acquire/release</div></div><div class="dbox orange"><div class="dbox-title">Portability</div><div class="dtext">On x86 the "speed win" is often zero; the portability <b>RISK</b> is real (bugs surface on ARM). Default away from relaxed</div></div></div><details class="ascii-diagram"><summary>Details</summary><pre><code> +-------------------------------------------------------------------+
+ | relaxed = atomicity + per-object coherence, NOTHING ELSE.         |
+ |                                                                   |
+ | GOOD: standalone counters, unique-id allocators, stats gathered   |
+ |       after join — value-only, single-variable uses.              |
+ | BAD:  publishing/consuming other data, ordering across two vars,  |
  |       any "flag means X is ready" scenario -&gt; use acquire/release.|
- |                                                                  |
- | On x86 the "speed win" is often zero; the portability RISK is    |
- | real (bugs surface on ARM). Default away from relaxed.          |
- +------------------------------------------------------------------+</code></pre></details>
+ |                                                                   |
+ | On x86 the "speed win" is often zero; the portability RISK is     |
+ | real (bugs surface on ARM). Default away from relaxed.            |
+ +-------------------------------------------------------------------+</code></pre></details>
 <p>Next: <a href="08-seq-cst-and-consume.md">08-seq-cst-and-consume.md</a>.</p>` },
   { name: `10. Seq Cst And Consume`, path: `08-seq-cst-and-consume.md`, dir: ``, words: 915, mins: 5, body: `<h1 id="08--seq_cst-the-safe-default--consume-the-cautionary-tale">08 — <code>seq_cst</code> (The Safe Default) &amp; <code>consume</code> (The Cautionary Tale)</h1>
 <p>Two orderings at opposite ends of the &ldquo;should I use this?&rdquo; spectrum:
