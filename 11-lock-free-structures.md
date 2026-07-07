@@ -243,11 +243,11 @@ box[green] Right question
 -->
 
 ```
-   +--------------------------------------------------------------+
+   +---------------------------------------------------------------+
    | "Is it lock-free?" is the wrong first question.               |
    | "Is it CORRECT and fast ENOUGH?" is the right one.            |
    | A well-used mutex beats a broken lock-free structure always.  |
-   +--------------------------------------------------------------+
+   +---------------------------------------------------------------+
 ```
 
 ---
@@ -271,16 +271,16 @@ box[green] Default
 -->
 
 ```
- +------------------------------------------------------------------+
- | Progress: blocking < obstruction-free < lock-free < wait-free.   |
- | SPSC ring buffer: single writer per index -> just acquire/release,|
- |   no CAS. Easiest & fast. Pad head/tail to avoid false sharing.  |
- | Treiber stack: CAS loop; push is easy, pop needs safe RECLAMATION.|
- | Reclamation (the hard part): hazard pointers / EBR-RCU / atomic  |
- |   shared_ptr. C++26 standardizes hazard pointers & RCU.         |
- | MPMC (Michael-Scott/Vyukov): use a library, don't hand-roll.    |
- | Default to a mutex; go lock-free only with proof + care.        |
- +------------------------------------------------------------------+
+ +--------------------------------------------------------------------+
+ | Progress: blocking < obstruction-free < lock-free < wait-free.     |
+ | SPSC ring buffer: single writer per index -> just acquire/release, |
+ |   no CAS. Easiest & fast. Pad head/tail to avoid false sharing.    |
+ | Treiber stack: CAS loop; push is easy, pop needs safe RECLAMATION. |
+ | Reclamation (the hard part): hazard pointers / EBR-RCU / atomic    |
+ |   shared_ptr. C++26 standardizes hazard pointers & RCU.            |
+ | MPMC (Michael-Scott/Vyukov): use a library, don't hand-roll.       |
+ | Default to a mutex; go lock-free only with proof + care.           |
+ +--------------------------------------------------------------------+
 ```
 
 Next: [12-patterns-and-pitfalls.md](12-patterns-and-pitfalls.md).
