@@ -2688,7 +2688,7 @@ assert(payload == 99);                      // (4) NEVER fires
  | threads safely (the everyday use of atomics).                    |
  +------------------------------------------------------------------+</code></pre></details>
 <p>Next: <a href="05-memory-orderings.md">05-memory-orderings.md</a>.</p>` },
-  { name: `7. Memory Orderings`, path: `05-memory-orderings.md`, dir: ``, words: 1228, mins: 6, body: `<h1 id="05--the-six-memory-orderings-precisely">05 — The Six Memory Orderings, Precisely</h1>
+  { name: `7. Memory Orderings`, path: `05-memory-orderings.md`, dir: ``, words: 1229, mins: 6, body: `<h1 id="05--the-six-memory-orderings-precisely">05 — The Six Memory Orderings, Precisely</h1>
 <p><code>std::memory_order</code> has six enumerators. This chapter defines each one, which
 operations accept it, and shows the barrier each implies with diagrams. Chapters
 06–08 then go deep on the important ones.</p>
@@ -2764,7 +2764,7 @@ compile-time-checkable, always logically wrong):</p>
         reads/writes before
                │  ⇧ operations above CANNOT sink below this store
    ┌───────────┴───────────┐
-   │  a.store(v, release)   │
+   │  a.store(v, release)  │
    └───────────────────────┘
         ... code ...
 </code></pre>
@@ -2774,11 +2774,11 @@ compile-time-checkable, always logically wrong):</p>
 <h3 id="the-pair-in-one-diagram">The pair in one diagram</h3>
 <pre><code>   Thread A (producer)                 Thread B (consumer)
    ───────────────────                 ────────────────────
-   write data...          ⇧ can't       │
+   write data...          ⇧ can't        │
    ┌─────────────────┐    sink below     │
-   │ store(release)   │ ~~~~~~~~~~~~~~~▶ ┌─────────────────┐
-   └─────────────────┘   synchronizes    │ load(acquire)    │
-                          with           └────────┬────────┘
+   │ store(release)  │ ~~~~~~~~~~~~~~~▶ ┌─────────────────┐
+   └─────────────────┘   synchronizes   │ load(acquire)   │
+                          with          └────────┬────────┘
                                           read data ⇩ can't rise above
    =&gt; everything A wrote before release is visible to B after acquire.
 </code></pre>
@@ -2828,15 +2828,15 @@ weak CPUs (ARM) seq_cst is notably more expensive than acquire/release.</p>
 </code></pre>
 <hr />
 <h2 id="9-how-to-choose-the-practical-rule">9. How to choose (the practical rule)</h2>
-<div class="diagram"><div class="diagram-title">How to choose memory order</div><div class="dbox green"><div class="dbox-title">Practical rule</div><div class="dtext">1. Start with <code>seq_cst</code> (the default). It's correct.</div><div class="dtext">2. If profiling shows the atomic is hot, and you can <b>PROVE</b> it:</div><div class="dbox teal"><div class="dbox-title">Weaker orders (when proven)</div><div class="dtext">pure counter, value only -&gt; <code>relaxed</code></div><div class="dtext">publish/consume data (flag+data) -&gt; <code>release</code> / <code>acquire</code></div><div class="dtext">RMW that publishes+observes -&gt; <code>acq_rel</code></div></div><div class="dtext">3. Never use <code>consume</code> (use <code>acquire</code>)</div><div class="dtext">4. Verify with TSan + reasoning + (ideally) on ARM hardware</div></div></div><details class="ascii-diagram"><summary>Details</summary><pre><code>   +--------------------------------------------------------------+
-   | 1. Start with seq_cst (the default). It's correct.            |
-   | 2. If profiling shows the atomic is hot, and you can PROVE it:|
-   |      * pure counter, value only         -&gt; relaxed            |
-   |      * publish/consume data (flag+data) -&gt; release / acquire  |
+<div class="diagram"><div class="diagram-title">How to choose memory order</div><div class="dbox green"><div class="dbox-title">Practical rule</div><div class="dtext">1. Start with <code>seq_cst</code> (the default). It's correct.</div><div class="dtext">2. If profiling shows the atomic is hot, and you can <b>PROVE</b> it:</div><div class="dbox teal"><div class="dbox-title">Weaker orders (when proven)</div><div class="dtext">pure counter, value only -&gt; <code>relaxed</code></div><div class="dtext">publish/consume data (flag+data) -&gt; <code>release</code> / <code>acquire</code></div><div class="dtext">RMW that publishes+observes -&gt; <code>acq_rel</code></div></div><div class="dtext">3. Never use <code>consume</code> (use <code>acquire</code>)</div><div class="dtext">4. Verify with TSan + reasoning + (ideally) on ARM hardware</div></div></div><details class="ascii-diagram"><summary>Details</summary><pre><code>   +----------------------------------------------------------------+
+   | 1. Start with seq_cst (the default). It's correct.             |
+   | 2. If profiling shows the atomic is hot, and you can PROVE it: |
+   |      * pure counter, value only         -&gt; relaxed             |
+   |      * publish/consume data (flag+data) -&gt; release / acquire   |
    |      * RMW that publishes+observes       -&gt; acq_rel            |
-   | 3. Never use 'consume' (use acquire).                        |
-   | 4. Verify with TSan + reasoning + (ideally) on ARM hardware.  |
-   +--------------------------------------------------------------+</code></pre></details>
+   | 3. Never use 'consume' (use acquire).                          |
+   | 4. Verify with TSan + reasoning + (ideally) on ARM hardware.   |
+   +----------------------------------------------------------------+</code></pre></details>
 <p>Decision diagram:</p>
 <pre><code>   Do you use the atomic's value to guard OTHER (non-atomic) data?
         │
@@ -2872,16 +2872,16 @@ use(data);
 <hr />
 <h2 id="11-summary">11. Summary</h2>
 <div class="diagram"><div class="diagram-title">Memory orderings summary</div><div class="dbox gray"><div class="dbox-title">relaxed</div><div class="dtext">Atomicity + coherence only. No cross-var ordering</div></div><div class="dbox teal"><div class="dbox-title">acquire</div><div class="dtext">Load barrier; nothing after moves before; pulls in the releaser's writes</div></div><div class="dbox teal"><div class="dbox-title">release</div><div class="dtext">Store barrier; nothing before moves after; publishes</div></div><div class="dbox blue"><div class="dbox-title">acq_rel</div><div class="dtext">Both, for RMW</div></div><div class="dbox green"><div class="dbox-title">seq_cst</div><div class="dtext">acquire+release + single <b>GLOBAL</b> total order (<b>DEFAULT</b>)</div></div><div class="dbox red"><div class="dbox-title">consume</div><div class="dtext">Avoid; use <code>acquire</code></div></div><div class="dbox green"><div class="dbox-title">Defaults</div><div class="dtext">loads <code>acquire</code>, stores <code>release</code>, RMW <code>acq_rel</code></div><div class="dtext">Default to <code>seq_cst</code>; weaken only with proof + profiling</div></div></div><details class="ascii-diagram"><summary>Details</summary><pre><code> +------------------------------------------------------------------+
- | relaxed : atomicity + coherence only. No cross-var ordering.      |
+ | relaxed : atomicity + coherence only. No cross-var ordering.     |
  | acquire : load barrier; nothing after moves before; pulls in     |
  |           the releaser's writes.                                 |
  | release : store barrier; nothing before moves after; publishes.  |
- | acq_rel : both, for RMW.                                          |
- | seq_cst : acquire+release + single GLOBAL total order (DEFAULT).  |
- | consume : avoid; use acquire.                                     |
+ | acq_rel : both, for RMW.                                         |
+ | seq_cst : acquire+release + single GLOBAL total order (DEFAULT). |
+ | consume : avoid; use acquire.                                    |
  |                                                                  |
  | loads acquire, stores release, RMW acq_rel.                      |
- | Default to seq_cst; weaken only with proof + profiling.         |
+ | Default to seq_cst; weaken only with proof + profiling.          |
  +------------------------------------------------------------------+</code></pre></details>
 <p>Next: <a href="06-acquire-release.md">06-acquire-release.md</a>.</p>` },
   { name: `8. Acquire Release`, path: `06-acquire-release.md`, dir: ``, words: 1160, mins: 6, body: `<h1 id="06--acquirerelease-in-depth">06 — Acquire/Release In Depth</h1>
