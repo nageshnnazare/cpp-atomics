@@ -103,7 +103,7 @@ compile-time-checkable, always logically wrong):
         reads/writes before
                │  ⇧ operations above CANNOT sink below this store
    ┌───────────┴───────────┐
-   │  a.store(v, release)   │
+   │  a.store(v, release)  │
    └───────────────────────┘
         ... code ...
 ```
@@ -118,11 +118,11 @@ compile-time-checkable, always logically wrong):
 ```
    Thread A (producer)                 Thread B (consumer)
    ───────────────────                 ────────────────────
-   write data...          ⇧ can't       │
+   write data...          ⇧ can't        │
    ┌─────────────────┐    sink below     │
-   │ store(release)   │ ~~~~~~~~~~~~~~~▶ ┌─────────────────┐
-   └─────────────────┘   synchronizes    │ load(acquire)    │
-                          with           └────────┬────────┘
+   │ store(release)  │ ~~~~~~~~~~~~~~~▶ ┌─────────────────┐
+   └─────────────────┘   synchronizes   │ load(acquire)   │
+                          with          └────────┬────────┘
                                           read data ⇩ can't rise above
    => everything A wrote before release is visible to B after acquire.
 ```
@@ -209,15 +209,15 @@ box[green] Practical rule
 -->
 
 ```
-   +--------------------------------------------------------------+
-   | 1. Start with seq_cst (the default). It's correct.            |
-   | 2. If profiling shows the atomic is hot, and you can PROVE it:|
-   |      * pure counter, value only         -> relaxed            |
-   |      * publish/consume data (flag+data) -> release / acquire  |
+   +----------------------------------------------------------------+
+   | 1. Start with seq_cst (the default). It's correct.             |
+   | 2. If profiling shows the atomic is hot, and you can PROVE it: |
+   |      * pure counter, value only         -> relaxed             |
+   |      * publish/consume data (flag+data) -> release / acquire   |
    |      * RMW that publishes+observes       -> acq_rel            |
-   | 3. Never use 'consume' (use acquire).                        |
-   | 4. Verify with TSan + reasoning + (ideally) on ARM hardware.  |
-   +--------------------------------------------------------------+
+   | 3. Never use 'consume' (use acquire).                          |
+   | 4. Verify with TSan + reasoning + (ideally) on ARM hardware.   |
+   +----------------------------------------------------------------+
 ```
 
 Decision diagram:
@@ -287,16 +287,16 @@ box[green] Defaults
 
 ```
  +------------------------------------------------------------------+
- | relaxed : atomicity + coherence only. No cross-var ordering.      |
+ | relaxed : atomicity + coherence only. No cross-var ordering.     |
  | acquire : load barrier; nothing after moves before; pulls in     |
  |           the releaser's writes.                                 |
  | release : store barrier; nothing before moves after; publishes.  |
- | acq_rel : both, for RMW.                                          |
- | seq_cst : acquire+release + single GLOBAL total order (DEFAULT).  |
- | consume : avoid; use acquire.                                     |
+ | acq_rel : both, for RMW.                                         |
+ | seq_cst : acquire+release + single GLOBAL total order (DEFAULT). |
+ | consume : avoid; use acquire.                                    |
  |                                                                  |
  | loads acquire, stores release, RMW acq_rel.                      |
- | Default to seq_cst; weaken only with proof + profiling.         |
+ | Default to seq_cst; weaken only with proof + profiling.          |
  +------------------------------------------------------------------+
 ```
 
