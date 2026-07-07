@@ -250,18 +250,18 @@ box[teal] Usage
 -->
 
 ```
- +------------------------------------------------------------------+
- | RELEASE store publishes all prior writes; ACQUIRE load that reads |
- | it sees them all. -> lock-free message passing / ownership handoff|
- | with ONE atomic guarding arbitrary non-atomic data.             |
- |                                                                  |
- | They are ONE-WAY (half) barriers -> cheaper than seq_cst, but    |
- | do NOT stop StoreLoad reordering (SB litmus) — that needs seq_cst.|
- |                                                                  |
- | Producer STORE(release); consumer LOAD(acquire). Not backwards.  |
- | RMW that both observes & publishes -> acq_rel (locks, refcounts). |
- | Prefer C++20 wait/notify over hand-spinning.                     |
- +------------------------------------------------------------------+
+ +--------------------------------------------------------------------+
+ | RELEASE store publishes all prior writes; ACQUIRE load that reads  |
+ | it sees them all. -> lock-free message passing / ownership handoff |
+ | with ONE atomic guarding arbitrary non-atomic data.                |
+ |                                                                    |
+ | They are ONE-WAY (half) barriers -> cheaper than seq_cst, but      | 
+ | do NOT stop StoreLoad reordering (SB litmus) — that needs seq_cst. |
+ |                                                                    |
+ | Producer STORE(release); consumer LOAD(acquire). Not backwards.    |
+ | RMW that both observes & publishes -> acq_rel (locks, refcounts).  |
+ | Prefer C++20 wait/notify over hand-spinning.                       |
+ +--------------------------------------------------------------------+
 ```
 
 Next: [07-relaxed.md](07-relaxed.md).
