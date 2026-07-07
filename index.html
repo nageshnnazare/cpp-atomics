@@ -3551,9 +3551,9 @@ void atomic_multiply(int factor) {
 </code></pre>
 <pre><code>   +---------------------------------------------------------+
    | current = load()                                        |
-   |   ┌──────────────────────────────────────────────┐     |
+   |   ┌───────────────────────────────────────────────┐     |
    |   │ desired = f(current)                          │     |
-   |   │ CAS(current, desired) ?                        │     |
+   |   │ CAS(current, desired) ?                       │     |
    |   │    success -&gt; done                            │     |
    |   │    failure -&gt; current now = latest; loop ─────┘     |
    +---------------------------------------------------------+
@@ -3663,19 +3663,19 @@ broken. Respect it.</p>
 <a href="examples/ch10_fetch_max.cpp"><code>examples/ch10_fetch_max.cpp</code></a>.</p>
 <hr />
 <h2 id="8-summary">8. Summary</h2>
-<div class="diagram"><div class="diagram-title">Compare-exchange summary</div><div class="dbox blue"><div class="dbox-title">CAS</div><div class="dtext">Atomically "if value==expected, set desired; else load into expected." Returns success bool. The universal RMW primitive</div></div><div class="dbox teal"><div class="dbox-title">weak vs strong</div><div class="dtext"><b>weak</b>: may fail spuriously -&gt; use in <b>LOOPS</b> (cheaper)</div><div class="dtext"><b>strong</b>: no spurious fail -&gt; use for <b>SINGLE</b> attempts</div></div><div class="dbox green"><div class="dbox-title">CAS loop</div><div class="dtext">Two orders: success (RMW) + failure (load; &lt;= success, no release)</div><div class="dtext">load -&gt; compute -&gt; CAS(weak); retry on fail (expected auto-refreshed). Lock-free progress guaranteed</div></div><div class="dbox red"><div class="dbox-title">ABA problem</div><div class="dtext">Value returns to A after A-&gt;B-&gt;A; CAS wrongly succeeds. Fix with tagged pointers / hazard pointers / RCU</div></div></div><details class="ascii-diagram"><summary>Details</summary><pre><code> +------------------------------------------------------------------+
- | CAS: atomically "if value==expected, set desired; else load into  |
- | expected." Returns success bool. The universal RMW primitive.    |
- |                                                                  |
- | weak: may fail spuriously -&gt; use in LOOPS (cheaper).            |
- | strong: no spurious fail -&gt; use for SINGLE attempts.            |
+<div class="diagram"><div class="diagram-title">Compare-exchange summary</div><div class="dbox blue"><div class="dbox-title">CAS</div><div class="dtext">Atomically "if value==expected, set desired; else load into expected." Returns success bool. The universal RMW primitive</div></div><div class="dbox teal"><div class="dbox-title">weak vs strong</div><div class="dtext"><b>weak</b>: may fail spuriously -&gt; use in <b>LOOPS</b> (cheaper)</div><div class="dtext"><b>strong</b>: no spurious fail -&gt; use for <b>SINGLE</b> attempts</div></div><div class="dbox green"><div class="dbox-title">CAS loop</div><div class="dtext">Two orders: success (RMW) + failure (load; &lt;= success, no release)</div><div class="dtext">load -&gt; compute -&gt; CAS(weak); retry on fail (expected auto-refreshed). Lock-free progress guaranteed</div></div><div class="dbox red"><div class="dbox-title">ABA problem</div><div class="dtext">Value returns to A after A-&gt;B-&gt;A; CAS wrongly succeeds. Fix with tagged pointers / hazard pointers / RCU</div></div></div><details class="ascii-diagram"><summary>Details</summary><pre><code> +--------------------------------------------------------------------+
+ | CAS: atomically "if value==expected, set desired; else load into   |
+ | expected." Returns success bool. The universal RMW primitive.      |
+ |                                                                    |
+ | weak: may fail spuriously -&gt; use in LOOPS (cheaper).               |
+ | strong: no spurious fail -&gt; use for SINGLE attempts.               |
  | Two orders: success (RMW) + failure (load; &lt;= success, no release).|
- | CAS loop: load -&gt; compute -&gt; CAS(weak); retry on fail (expected  |
- |   auto-refreshed). Lock-free progress guaranteed.               |
- |                                                                  |
- | ABA PROBLEM: value returns to A after A-&gt;B-&gt;A; CAS wrongly       |
- |   succeeds. Fix with tagged pointers / hazard pointers / RCU.    |
- +------------------------------------------------------------------+</code></pre></details>
+ | CAS loop: load -&gt; compute -&gt; CAS(weak); retry on fail (expected    |
+ |   auto-refreshed). Lock-free progress guaranteed.                  |
+ |                                                                    |
+ | ABA PROBLEM: value returns to A after A-&gt;B-&gt;A; CAS wrongly         |
+ |   succeeds. Fix with tagged pointers / hazard pointers / RCU.      |
+ +--------------------------------------------------------------------+</code></pre></details>
 <p>Next: <a href="11-lock-free-structures.md">11-lock-free-structures.md</a>.</p>` },
   { name: `13. Lock Free Structures`, path: `11-lock-free-structures.md`, dir: ``, words: 1329, mins: 7, body: `<h1 id="11--lock-free-data-structures">11 — Lock-Free Data Structures</h1>
 <p>Putting it together: real lock-free structures, their memory ordering, and the
