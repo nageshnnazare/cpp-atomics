@@ -180,7 +180,7 @@ at a cost.
 
 ```
                        THE C++ MEMORY MODEL
-  ┌──────────────────────────────────────────────────────────────┐
+  ┌────────────────────────────────────────────────────────────────┐
   │ within a thread:        sequenced-before  (program order)      │
   │                                                                │
   │ across threads:         release ──synchronizes-with──▶ acquire │
@@ -191,7 +191,7 @@ at a cost.
   │ per atomic object:      MODIFICATION ORDER (coherence)         │
   │                                                                │
   │ seq_cst adds:           single GLOBAL total order S            │
-  └──────────────────────────────────────────────────────────────┘
+  └────────────────────────────────────────────────────────────────┘
   Data race  =  conflicting access with NO happens-before  =  UB.
 ```
 
@@ -250,12 +250,12 @@ box[green] Key idea
  | happens-before    : transitive combo -> defines visibility.      |
  |    no happens-before + conflicting access = data race = UB.      |
  | modification order: per-atomic total order (coherence); relaxed  |
- |    suffices for a single variable's own value.                  |
+ |    suffices for a single variable's own value.                   |
  | seq_cst           : + one GLOBAL total order over seq_cst ops.   |
  |                     the safe default; matches the naive model.   |
  |                                                                  |
  | KEY IDEA: a release/acquire pair PUBLISHES ordinary data across  |
- | threads safely (the everyday use of atomics).                   |
+ | threads safely (the everyday use of atomics).                    |
  +------------------------------------------------------------------+
 ```
 
