@@ -3881,7 +3881,7 @@ PaddedIndex head_, tail_;   // producer &amp; consumer no longer fight over one 
  | Default to a mutex; go lock-free only with proof + care.           |
  +--------------------------------------------------------------------+</code></pre></details>
 <p>Next: <a href="12-patterns-and-pitfalls.md">12-patterns-and-pitfalls.md</a>.</p>` },
-  { name: `14. Patterns And Pitfalls`, path: `12-patterns-and-pitfalls.md`, dir: ``, words: 1267, mins: 6, body: `<h1 id="12--patterns--pitfalls">12 — Patterns &amp; Pitfalls</h1>
+  { name: `14. Patterns And Pitfalls`, path: `12-patterns-and-pitfalls.md`, dir: ``, words: 1266, mins: 6, body: `<h1 id="12--patterns--pitfalls">12 — Patterns &amp; Pitfalls</h1>
 <p>A field guide of ready-to-use atomic patterns (spinlock, one-shot flag,
 double-checked init, seqlock) and the traps that bite everyone (false sharing,
 volatile confusion, non-atomic composite ops).</p>
@@ -4092,14 +4092,14 @@ int x = a; int y = a;      // x and y may differ (two loads)
 <h2 id="11-summary">11. Summary</h2>
 <div class="diagram"><div class="diagram-title">Patterns and pitfalls summary</div><div class="dbox green"><div class="dbox-title">Patterns</div><div class="dtext">Stop flag, spinlock (<code>atomic_flag</code> <code>test_and_set</code>), double-checked init (prefer static local / <code>call_once</code>), seqlock</div></div><div class="dbox red"><div class="dbox-title">Pitfalls</div><div class="dtext">false sharing -&gt; <code>alignas(hardware_destructive_...)</code></div><div class="dtext"><code>volatile</code> is <b>NOT</b> threading -&gt; use <code>std::atomic</code></div><div class="dtext"><code>a=a+1</code> / check-then-act are <b>NOT</b> atomic -&gt; RMW or CAS or mutex</div><div class="dtext">default order is <code>seq_cst</code> (fine, but know the cost)</div><div class="dtext">never mix atomic &amp; non-atomic access to one object</div></div></div><details class="ascii-diagram"><summary>Details</summary><pre><code> +------------------------------------------------------------------+
  | Patterns: stop flag, spinlock (atomic_flag test_and_set),        |
- |   double-checked init (prefer static local / call_once), seqlock. |
+ |   double-checked init (prefer static local / call_once), seqlock.|
  |                                                                  |
  | Pitfalls:                                                        |
  |   * false sharing -&gt; alignas(hardware_destructive_...)           |
  |   * volatile is NOT threading -&gt; use std::atomic                 |
  |   * a=a+1 / check-then-act are NOT atomic -&gt; RMW or CAS or mutex |
- |   * default order is seq_cst (fine, but know the cost)          |
- |   * never mix atomic &amp; non-atomic access to one object          |
+ |   * default order is seq_cst (fine, but know the cost)           |
+ |   * never mix atomic &amp; non-atomic access to one object           |
  +------------------------------------------------------------------+</code></pre></details>
 <p>Next: <a href="13-cpp20-26-features.md">13-cpp20-26-features.md</a>.</p>` },
   { name: `15. Cpp20 26 Features`, path: `13-cpp20-26-features.md`, dir: ``, words: 1212, mins: 6, body: `<h1 id="13--c202326-atomic-features">13 — C++20/23/26 Atomic Features</h1>
