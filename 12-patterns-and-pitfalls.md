@@ -294,14 +294,14 @@ box[red] Pitfalls
 ```
  +------------------------------------------------------------------+
  | Patterns: stop flag, spinlock (atomic_flag test_and_set),        |
- |   double-checked init (prefer static local / call_once), seqlock. |
+ |   double-checked init (prefer static local / call_once), seqlock.|
  |                                                                  |
  | Pitfalls:                                                        |
  |   * false sharing -> alignas(hardware_destructive_...)           |
  |   * volatile is NOT threading -> use std::atomic                 |
  |   * a=a+1 / check-then-act are NOT atomic -> RMW or CAS or mutex |
- |   * default order is seq_cst (fine, but know the cost)          |
- |   * never mix atomic & non-atomic access to one object          |
+ |   * default order is seq_cst (fine, but know the cost)           |
+ |   * never mix atomic & non-atomic access to one object           |
  +------------------------------------------------------------------+
 ```
 
