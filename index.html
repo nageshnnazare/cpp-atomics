@@ -4102,7 +4102,7 @@ int x = a; int y = a;      // x and y may differ (two loads)
  |   * never mix atomic &amp; non-atomic access to one object           |
  +------------------------------------------------------------------+</code></pre></details>
 <p>Next: <a href="13-cpp20-26-features.md">13-cpp20-26-features.md</a>.</p>` },
-  { name: `15. Cpp20 26 Features`, path: `13-cpp20-26-features.md`, dir: ``, words: 1212, mins: 6, body: `<h1 id="13--c202326-atomic-features">13 — C++20/23/26 Atomic Features</h1>
+  { name: `15. Cpp20 26 Features`, path: `13-cpp20-26-features.md`, dir: ``, words: 1213, mins: 6, body: `<h1 id="13--c202326-atomic-features">13 — C++20/23/26 Atomic Features</h1>
 <p>Modern C++ added major atomic capabilities. C++20 was huge (<code>wait</code>/<code>notify</code>,
 <code>atomic_ref</code>, <code>atomic&lt;shared_ptr&gt;</code>, <code>atomic&lt;floating&gt;</code>). C++23/26 continue with
 reclamation primitives and more. This chapter surveys them with examples.</p>
@@ -4297,18 +4297,18 @@ future direction; check your standard library.</p>
 </code></pre>
 <hr />
 <h2 id="10-summary">10. Summary</h2>
-<div class="diagram"><div class="diagram-title">C++20–26 features summary</div><div class="dbox blue"><div class="dbox-title">C++20</div><div class="dtext">wait/notify (blocking, no spin), <code>atomic_ref</code> (atomic view over plain objects), <code>atomic&lt;shared_ptr&gt;</code> (solves reclamation!)</div><div class="dtext"><code>atomic&lt;float&gt;</code> arithmetic, <code>atomic_flag</code> <code>test()</code>/<code>wait()</code></div><div class="dtext">+ latch/barrier/semaphore for coordination</div></div><div class="dbox teal"><div class="dbox-title">C++23</div><div class="dtext"><code>&lt;stdatomic.h&gt;</code> interop, constexpr/wording polish</div></div><div class="dbox purple"><div class="dbox-title">C++26</div><div class="dtext"><code>std::hazard_pointer</code> &amp; <code>std::rcu</code> (standard safe reclamation), <code>std::execution</code>, more. (Experimental in 2026.)</div></div><div class="dbox green"><div class="dbox-title">Practical</div><div class="dtext">Prefer wait/notify over spin; <code>atomic&lt;shared_ptr&gt;</code> for read-mostly swaps; a library (or C++26 hazard/rcu) for lock-free</div></div></div><details class="ascii-diagram"><summary>Details</summary><pre><code> +------------------------------------------------------------------+
- | C++20: wait/notify (blocking, no spin), atomic_ref (atomic view  |
+<div class="diagram"><div class="diagram-title">C++20–26 features summary</div><div class="dbox blue"><div class="dbox-title">C++20</div><div class="dtext">wait/notify (blocking, no spin), <code>atomic_ref</code> (atomic view over plain objects), <code>atomic&lt;shared_ptr&gt;</code> (solves reclamation!)</div><div class="dtext"><code>atomic&lt;float&gt;</code> arithmetic, <code>atomic_flag</code> <code>test()</code>/<code>wait()</code></div><div class="dtext">+ latch/barrier/semaphore for coordination</div></div><div class="dbox teal"><div class="dbox-title">C++23</div><div class="dtext"><code>&lt;stdatomic.h&gt;</code> interop, constexpr/wording polish</div></div><div class="dbox purple"><div class="dbox-title">C++26</div><div class="dtext"><code>std::hazard_pointer</code> &amp; <code>std::rcu</code> (standard safe reclamation), <code>std::execution</code>, more. (Experimental in 2026.)</div></div><div class="dbox green"><div class="dbox-title">Practical</div><div class="dtext">Prefer wait/notify over spin; <code>atomic&lt;shared_ptr&gt;</code> for read-mostly swaps; a library (or C++26 hazard/rcu) for lock-free</div></div></div><details class="ascii-diagram"><summary>Details</summary><pre><code> +-------------------------------------------------------------------+
+ | C++20: wait/notify (blocking, no spin), atomic_ref (atomic view   |
  |   over plain objects), atomic&lt;shared_ptr&gt; (solves reclamation!),  |
- |   atomic&lt;float&gt; arithmetic, atomic_flag test()/wait().           |
- |   + latch/barrier/semaphore for coordination.                    |
- | C++23: &lt;stdatomic.h&gt; interop, constexpr/wording polish.          |
+ |   atomic&lt;float&gt; arithmetic, atomic_flag test()/wait().            |
+ |   + latch/barrier/semaphore for coordination.                     | 
+ | C++23: &lt;stdatomic.h&gt; interop, constexpr/wording polish.           |
  | C++26: std::hazard_pointer &amp; std::rcu (standard safe reclamation),|
- |   std::execution, more. (Experimental in 2026.)                 |
- |                                                                  |
- | Practical: prefer wait/notify over spin; atomic&lt;shared_ptr&gt; for  |
- | read-mostly swaps; a library (or C++26 hazard/rcu) for lock-free.|
- +------------------------------------------------------------------+</code></pre></details>
+ |   std::execution, more. (Experimental in 2026.)                   |
+ |                                                                   |
+ | Practical: prefer wait/notify over spin; atomic&lt;shared_ptr&gt; for   |
+ | read-mostly swaps; a library (or C++26 hazard/rcu) for lock-free. |
+ +-------------------------------------------------------------------+</code></pre></details>
 <p>Next: <a href="14-cheatsheet.md">14-cheatsheet.md</a>.</p>` },
   { name: `16. Cheatsheet`, path: `14-cheatsheet.md`, dir: ``, words: 695, mins: 3, body: `<h1 id="14--atomics--memory-ordering-cheatsheet">14 — Atomics &amp; Memory Ordering Cheatsheet</h1>
 <p>Quick recall. Read the chapters first; this is the reference card.</p>
