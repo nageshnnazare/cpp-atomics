@@ -2635,7 +2635,7 @@ at a cost.</p>
 <hr />
 <h2 id="8-putting-the-relations-in-one-picture">8. Putting the relations in one picture</h2>
 <pre><code>                       THE C++ MEMORY MODEL
-  ┌──────────────────────────────────────────────────────────────┐
+  ┌────────────────────────────────────────────────────────────────┐
   │ within a thread:        sequenced-before  (program order)      │
   │                                                                │
   │ across threads:         release ──synchronizes-with──▶ acquire │
@@ -2646,7 +2646,7 @@ at a cost.</p>
   │ per atomic object:      MODIFICATION ORDER (coherence)         │
   │                                                                │
   │ seq_cst adds:           single GLOBAL total order S            │
-  └──────────────────────────────────────────────────────────────┘
+  └────────────────────────────────────────────────────────────────┘
   Data race  =  conflicting access with NO happens-before  =  UB.
 </code></pre>
 <hr />
@@ -2680,12 +2680,12 @@ assert(payload == 99);                      // (4) NEVER fires
  | happens-before    : transitive combo -&gt; defines visibility.      |
  |    no happens-before + conflicting access = data race = UB.      |
  | modification order: per-atomic total order (coherence); relaxed  |
- |    suffices for a single variable's own value.                  |
+ |    suffices for a single variable's own value.                   |
  | seq_cst           : + one GLOBAL total order over seq_cst ops.   |
  |                     the safe default; matches the naive model.   |
  |                                                                  |
  | KEY IDEA: a release/acquire pair PUBLISHES ordinary data across  |
- | threads safely (the everyday use of atomics).                   |
+ | threads safely (the everyday use of atomics).                    |
  +------------------------------------------------------------------+</code></pre></details>
 <p>Next: <a href="05-memory-orderings.md">05-memory-orderings.md</a>.</p>` },
   { name: `7. Memory Orderings`, path: `05-memory-orderings.md`, dir: ``, words: 1228, mins: 6, body: `<h1 id="05--the-six-memory-orderings-precisely">05 — The Six Memory Orderings, Precisely</h1>
