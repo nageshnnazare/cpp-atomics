@@ -3336,11 +3336,11 @@ int v = p-&gt;data;   // 'p-&gt;data' DEPENDS on p, so ordering was &quot;free&q
  |   seq_cst ops. The DEFAULT and the safe choice. Only order that  |
  |   forbids the Store-Buffer "both read 0" outcome. Needed for     |
  |   mutual-exclusion / "at least one sees the other" logic.        |
- |   Cost: pricier stores (x86) / both sides (ARM).                |
+ |   Cost: pricier stores (x86) / both sides (ARM).                 |
  |                                                                  |
  | consume: a well-intentioned cheaper-acquire that no compiler     |
  |   implements (promoted to acquire), hard to use correctly, and   |
- |   discouraged. Just use acquire.                                |
+ |   discouraged. Just use acquire.                                 |
  +------------------------------------------------------------------+</code></pre></details>
 <p>Next: <a href="09-fences.md">09-fences.md</a>.</p>` },
   { name: `11. Fences`, path: `09-fences.md`, dir: ``, words: 877, mins: 4, body: `<h1 id="09--fences-stdatomic_thread_fence">09 — Fences (<code>std::atomic_thread_fence</code>)</h1>
